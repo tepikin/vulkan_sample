@@ -2,9 +2,9 @@
 #include <android/log.h>
 #include <android/native_window_jni.h>
 #include <android/asset_manager_jni.h>
-#include "VulkanInstance.h"
+#include "VulkanInstanceAndroid.h"
 
-VulkanInstance *vulkanInstance = NULL;
+VulkanInstanceAndroid *vulkanInstance = NULL;
 
 extern "C" {
 
@@ -18,7 +18,7 @@ Java_vk_VulkanTemplate_nativeCreate(JNIEnv *env, jobject vulkanTemplate,
     __android_log_print(ANDROID_LOG_DEBUG, "vulkanTemplate", "create");
     auto window = ANativeWindow_fromSurface(env, surface);
     auto assetManager = AAssetManager_fromJava(env, pAssetManager);
-    vulkanInstance = new VulkanInstance(assetManager, window);
+    vulkanInstance = new VulkanInstanceAndroid(assetManager, window);
 }
 
 JNIEXPORT void JNICALL

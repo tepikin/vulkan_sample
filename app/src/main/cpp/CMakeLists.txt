@@ -6,7 +6,6 @@ add_library(vulkan-template SHARED
         vulkan/vulkan_wrapper.cpp
         vulkan/pipeline.cpp
         vulkan/VDeleter.h
-        VulkanInstance.h
         VulkanTemplateAndroid.cpp
         )
 
