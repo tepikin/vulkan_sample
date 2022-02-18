@@ -128,62 +128,7 @@ private:
         std::vector<VkPresentModeKHR> presentModes;
     };
 
-// We will call this function the window is opened.
-// This is where we will initialise everything
     bool initialized_ = false;
-    //bool initialize(AAssetManager* assetManager,ANativeWindow* mWindow);
-
-// Functions interacting with Android native activity
-    //void android_main(struct android_app* state);
-    // void terminate();
-    //void handle_cmd(android_app* app, int32_t cmd);
-    //bool checkValidationLayerSupport(const std::vector<const char*>);
-
-// Global variables
-
-//    void createInstance();
-//
-//    void setupDebugCallback();
-//
-//    void createSurface(ANativeWindow* window);
-//
-//    bool isEnabledValidationLayers();
-//
-//    void pickPhysicalDevice();
-//
-//    bool isDeviceSuitable(VkPhysicalDevice device);
-//
-//    bool checkDeviceExtensionSupport(VkPhysicalDevice device);
-//
-//    void createLogicalDevice();
-//
-//    void createSwapChain();
-//
-//    void createImageViews();
-//
-//    void createGraphicsPipeline(AAssetManager* assetManager);
-//
-//    void createRenderPass();
-//
-//    void createFramebuffers();
-//
-//    void createCommandPool();
-//
-//    void createCommandBuffers();
-//
-//    void createSemaphores();
-//
-//    VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
-//
-//    VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR> availablePresentModes);
-//
-//    VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
-//
-//    QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
-//
-//    SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
-
-
 
     VDeleter<VkInstance> instance{vkDestroyInstance};
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;

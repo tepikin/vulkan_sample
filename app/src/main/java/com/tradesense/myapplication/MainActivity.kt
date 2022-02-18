@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 
 import vk.VulkanSurfaceView
 import vk.VulkanTemplate
@@ -26,11 +27,11 @@ class MainActivity : AppCompatActivity() {
             vulkanSurfaceView?.translationX=0f
            // vulkanSurfaceView?.alpha=0f
 
-            vulkanSurfaceView?.animate()?.scaleX(0.5f)?.scaleY(0.5f)?.translationX(360f)?.setDuration(1000)?.setInterpolator(AccelerateDecelerateInterpolator())?.withEndAction {
-                vulkanSurfaceView?.scaleX=1f
-                vulkanSurfaceView?.scaleY=1f
-                vulkanSurfaceView?.rotation=0f
-                vulkanSurfaceView?.translationX=0f
+            vulkanSurfaceView?.animate()?.scaleX(0.5f)?.scaleY(0.5f)?.translationX(1080f/3)?.setDuration(1000)?.setInterpolator(DecelerateInterpolator())?.withEndAction {
+//                vulkanSurfaceView?.scaleX=1f
+//                vulkanSurfaceView?.scaleY=1f
+//                vulkanSurfaceView?.rotation=0f
+//                vulkanSurfaceView?.translationX=0f
             //    vulkanSurfaceView?.alpha=0f
             }
 
