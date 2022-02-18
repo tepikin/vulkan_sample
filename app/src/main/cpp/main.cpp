@@ -47,8 +47,8 @@ static const char* kTAG = "Vulkan-template";
     assert(false);                                                    \
   }
 
-const int WIDTH = 800;
-const int HEIGHT = 600;
+const int WIDTH = 300;
+const int HEIGHT = 300;
 
 struct QueueFamilyIndices {
     int graphicsFamily = -1;
@@ -68,7 +68,7 @@ struct SwapChainSupportDetails {
 // We will call this function the window is opened.
 // This is where we will initialise everything
 bool initialized_ = false;
-bool initialize(android_app* app);
+bool initialize(AAssetManager* assetManager,ANativeWindow* mWindow);
 
 // Functions interacting with Android native activity
 void android_main(struct android_app* state);
@@ -82,7 +82,7 @@ void createInstance();
 
 void setupDebugCallback();
 
-void createSurface(android_app *pApp);
+void createSurface(ANativeWindow* window);
 
 bool isEnabledValidationLayers();
 
@@ -98,7 +98,7 @@ void createSwapChain();
 
 void createImageViews();
 
-void createGraphicsPipeline(android_app *pApp);
+void createGraphicsPipeline(AAssetManager* assetManager);
 
 void createRenderPass();
 
@@ -184,8 +184,10 @@ void android_main(struct android_app* app) {
         vkDeviceWaitIdle(device);
     }
 }
-
-bool initialize(android_app* app) {
+void onDrawFrame(){
+    if (initialized_) drawFrame();
+}
+bool initialize(AAssetManager* assetManager,ANativeWindow* mWindow) {
     // Load Android vulkan and retrieve vulkan API function pointers
     if (!InitVulkan()) {
         LOGE("Vulkan is unavailable, install vulkan and re-start");
@@ -194,7 +196,7 @@ bool initialize(android_app* app) {
 
     createInstance();
     setupDebugCallback();
-    createSurface(app);
+    createSurface(mWindow);
 
     pickPhysicalDevice();
 
@@ -206,7 +208,7 @@ bool initialize(android_app* app) {
 
     createRenderPass();
 
-    createGraphicsPipeline(app);
+    createGraphicsPipeline(assetManager);
 
     createFramebuffers();
 
@@ -289,13 +291,13 @@ void setupDebugCallback() {
     }
 }
 
-void createSurface(android_app *app) {
+void createSurface(ANativeWindow* window) {
     // if we create a surface, we need the surface extension
     VkAndroidSurfaceCreateInfoKHR createInfo {
             .sType = VK_STRUCTURE_TYPE_ANDROID_SURFACE_CREATE_INFO_KHR,
             .pNext = nullptr,
             .flags = 0,
-            .window = app->window };
+            .window = window };
     if (vkCreateAndroidSurfaceKHR(instance, &createInfo, nullptr,
                                       surface.replace()) != VK_SUCCESS) {
         LOGE("failed creating android surface");
@@ -502,13 +504,13 @@ void createRenderPass() {
 
 }
 
-void createGraphicsPipeline(android_app *app) {
+void createGraphicsPipeline(AAssetManager* assetManager) {
 
-    if (createShaderModule(app, device, "shaders/triangle_vert.spv", vertShaderModule.replace()) != VK_SUCCESS) {
+    if (createShaderModule(assetManager, device, "shaders/triangle_vert.spv", vertShaderModule.replace()) != VK_SUCCESS) {
         LOGE("failed to create vertex shader module!");
     }
 
-    if (createShaderModule(app, device, "shaders/triangle_frag.spv", fragShaderModule.replace()) != VK_SUCCESS) {
+    if (createShaderModule(assetManager, device, "shaders/triangle_frag.spv", fragShaderModule.replace()) != VK_SUCCESS) {
         LOGE("failed to create fragment shader module!");
     }
 
@@ -937,7 +939,7 @@ void handle_cmd(android_app* app, int32_t cmd) {
     switch (cmd) {
         case APP_CMD_INIT_WINDOW:
             // The window is being shown, get it ready.
-            initialize(app);
+            initialize(app->activity->assetManager,app->window);
             break;
         case APP_CMD_TERM_WINDOW:
             // The window is being hidden or closed, clean it up.

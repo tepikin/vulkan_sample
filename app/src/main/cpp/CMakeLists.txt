@@ -10,10 +10,11 @@ include_directories(${APP_GLUE_DIR})
 add_library( app-glue STATIC ${APP_GLUE_DIR}/android_native_app_glue.c)
 
 add_library(vulkan-template SHARED
-            main.cpp
             vulkan/vulkan_wrapper.cpp
             vulkan/pipeline.cpp
             vulkan/VDeleter.h
+            VulkanInstance.h
+            VulkanAppBridge.cpp
             )
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -std=c++11 \

@@ -3,9 +3,9 @@
 #include <vector>
 #include <android/asset_manager.h>
 
-VkResult createShaderModule(android_app* androidAppCtx, VkDevice  device, const char* filePath, VkShaderModule* shaderOut) {
+VkResult createShaderModule(AAssetManager* assetManager, VkDevice  device, const char* filePath, VkShaderModule* shaderOut) {
     // Read the file
-    AAsset* file = AAssetManager_open(androidAppCtx->activity->assetManager, filePath, AASSET_MODE_BUFFER);
+    AAsset* file = AAssetManager_open(assetManager, filePath, AASSET_MODE_BUFFER);
     size_t fileLength = AAsset_getLength(file);
 
     char* fileContent = new char[fileLength];
