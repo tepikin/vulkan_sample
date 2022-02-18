@@ -9,7 +9,7 @@ VulkanInstance *vulkanInstance = NULL;
 extern "C" {
 
 JNIEXPORT void JNICALL
-Java_vk_VulkanAppBridge_nativeCreate(JNIEnv *env, jobject vulkanAppBridge,
+Java_vk_VulkanTemplate_nativeCreate(JNIEnv *env, jobject vulkanAppBridge,
         jobject surface, jobject pAssetManager) {
 if (vulkanInstance) {
 delete vulkanInstance;
@@ -22,7 +22,7 @@ auto assetManager = AAssetManager_fromJava(env, pAssetManager);
 }
 
 JNIEXPORT void JNICALL
-Java_vk_VulkanAppBridge_nativeDestroy(JNIEnv *env, jobject vulkanAppBridge) {
+Java_vk_VulkanTemplate_nativeDestroy(JNIEnv *env, jobject vulkanAppBridge) {
 __android_log_print(ANDROID_LOG_DEBUG, "mc-native-VulkanAppBridge", "destroy");
 if (vulkanInstance) {
 delete vulkanInstance;
@@ -31,7 +31,7 @@ delete vulkanInstance;
 }
 
 JNIEXPORT void JNICALL
-Java_vk_VulkanAppBridge_nativeResize(JNIEnv *env, jobject vulkanAppBridge, jint width, jint height) {
+Java_vk_VulkanTemplate_nativeResize(JNIEnv *env, jobject vulkanAppBridge, jint width, jint height) {
 __android_log_print(ANDROID_LOG_DEBUG, "mc-native-VulkanAppBridge", "resize: %dx%d", width, height);
 if (vulkanInstance) {
 vulkanInstance->setSize(width, height);
@@ -40,7 +40,7 @@ vulkanInstance->setSize(width, height);
 }
 
 JNIEXPORT void JNICALL
-Java_vk_VulkanAppBridge_nativeDraw(JNIEnv *env, jobject vulkanAppBridge) {
+Java_vk_VulkanTemplate_nativeDraw(JNIEnv *env, jobject vulkanAppBridge) {
 __android_log_print(ANDROID_LOG_DEBUG, "mc-native-VulkanAppBridge", "draw");
 if (vulkanInstance) {
 vulkanInstance->drawFrame();

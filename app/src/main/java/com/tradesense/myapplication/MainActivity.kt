@@ -8,6 +8,7 @@ import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 
 import vk.VulkanSurfaceView
+import vk.VulkanTemplate
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.fragment_first)
 
         var vulkanSurfaceView =  findViewById<VulkanSurfaceView>(R.id.vulkanSurfaceView)
+        vulkanSurfaceView.vulkanRenderer = VulkanTemplate(this)
         findViewById<View>(R.id.button_first).setOnClickListener {
             vulkanSurfaceView?.scaleX=1f
             vulkanSurfaceView?.scaleY=1f

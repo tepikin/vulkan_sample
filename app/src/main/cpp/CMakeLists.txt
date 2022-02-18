@@ -14,7 +14,7 @@ add_library(vulkan-template SHARED
             vulkan/pipeline.cpp
             vulkan/VDeleter.h
             VulkanInstance.h
-            VulkanAppBridge.cpp
+        VulkanTemplateAndroid.cpp
             )
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -std=c++11 \

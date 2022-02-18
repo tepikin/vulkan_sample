@@ -5,11 +5,17 @@ import android.util.AttributeSet
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 
-// File: VulkanSurfaceView.kt
 
 class VulkanSurfaceView: SurfaceView, SurfaceHolder.Callback2 {
 
-    private var vulkanApp = VulkanAppBridge()
+    interface IVulkanRenderer {
+        fun draw(holder: SurfaceHolder)
+        fun create(holder: SurfaceHolder)
+        fun destroy(holder: SurfaceHolder)
+        fun resize(holder: SurfaceHolder, width: Int, height: Int)
+    }
+
+    var vulkanRenderer :IVulkanRenderer? =null
 
     constructor(context: Context): super(context) {
     }
@@ -28,26 +34,21 @@ class VulkanSurfaceView: SurfaceView, SurfaceHolder.Callback2 {
         holder.addCallback(this)
     }
 
-    // ...
-    // Implementation code similar to one in GLSurfaceView is skipped.
-    // See: https://android.googlesource.com/platform/frameworks/base/+/master/opengl/java/android/opengl/GLSurfaceView.java
-    // ...
+    private fun requireRender()=vulkanRenderer?:throw IllegalArgumentException("vulkanRenderer not setted")
 
     override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
-        vulkanApp.resize(width, height)
+        requireRender().resize(holder,width, height)
     }
 
     override fun surfaceDestroyed(holder: SurfaceHolder) {
-        vulkanApp.destroy()
+        requireRender().destroy(holder)
     }
 
     override fun surfaceCreated(holder: SurfaceHolder) {
-        holder?.let { h ->
-            vulkanApp.create(h.surface, resources.assets)
-        }
+        requireRender().create(holder)
     }
 
     override fun surfaceRedrawNeeded(holder: SurfaceHolder) {
-        vulkanApp.draw()
+        requireRender().draw(holder)
     }
 }
