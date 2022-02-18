@@ -1,0 +1,15 @@
+Detecting C compiler ABI info failed to compile with the following output:
+Change Dir: C:/develop/MyApplication5/app/src/main/cpp/CMakeFiles/CMakeTmp
+
+Run Build Command(s):nmake /nologo cmTC_986ec\fast && Не удается найти указанный файл
+Generator: execution of make failed. Make command was: nmake /nologo cmTC_986ec\fast && 
+
+
+
+Determining if the C compiler works failed with the following output:
+Change Dir: C:/develop/MyApplication5/app/src/main/cpp/CMakeFiles/CMakeTmp
+
+Run Build Command(s):nmake /nologo cmTC_d3860\fast && Не удается найти указанный файл
+Generator: execution of make failed. Make command was: nmake /nologo cmTC_d3860\fast && 
+
+
