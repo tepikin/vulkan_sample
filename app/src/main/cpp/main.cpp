@@ -17,7 +17,7 @@
 #include <vector>
 #include <set>
 #include <android/log.h>
-#include <android_native_app_glue.h>
+//#include <android_native_app_glue.h>
 #include "vulkan/vulkan_wrapper.h"
 #include "vulkan/VDeleter.h"
 #include "vulkan/vulkan_validation.h"
@@ -164,26 +164,26 @@ const std::vector<const char*> validationLayers = {
 const std::vector<const char*> deviceExtensions = {
         VK_KHR_SWAPCHAIN_EXTENSION_NAME
 };
-
-// typical Android NativeActivity entry function
-void android_main(struct android_app* app) {
-    //app_dummy();
-
-    app->onAppCmd = handle_cmd;
-
-    int events;
-    android_poll_source* source;
-    do {
-        if (ALooper_pollAll(initialized_? 1: 0, nullptr, &events, (void**)&source) >= 0) {
-            if (source != NULL) source->process(app, source);
-        }
-        if (initialized_) drawFrame();
-    } while (app->destroyRequested == 0);
-
-    if (initialized_) {
-        vkDeviceWaitIdle(device);
-    }
-}
+//
+//// typical Android NativeActivity entry function
+//void android_main(struct android_app* app) {
+//    //app_dummy();
+//
+//    app->onAppCmd = handle_cmd;
+//
+//    int events;
+//    android_poll_source* source;
+//    do {
+//        if (ALooper_pollAll(initialized_? 1: 0, nullptr, &events, (void**)&source) >= 0) {
+//            if (source != NULL) source->process(app, source);
+//        }
+//        if (initialized_) drawFrame();
+//    } while (app->destroyRequested == 0);
+//
+//    if (initialized_) {
+//        vkDeviceWaitIdle(device);
+//    }
+//}
 void onDrawFrame(){
     if (initialized_) drawFrame();
 }
@@ -934,21 +934,21 @@ void terminate() {
     initialized_ = false;
 }
 
-// Process the next main command.
-void handle_cmd(android_app* app, int32_t cmd) {
-    switch (cmd) {
-        case APP_CMD_INIT_WINDOW:
-            // The window is being shown, get it ready.
-            initialize(app->activity->assetManager,app->window);
-            break;
-        case APP_CMD_TERM_WINDOW:
-            // The window is being hidden or closed, clean it up.
-            terminate();
-            break;
-        default:
-            LOGI("event not handled: %d", cmd);
-    }
-}
+//// Process the next main command.
+//void handle_cmd(android_app* app, int32_t cmd) {
+//    switch (cmd) {
+//        case APP_CMD_INIT_WINDOW:
+//            // The window is being shown, get it ready.
+//            initialize(app->activity->assetManager,app->window);
+//            break;
+//        case APP_CMD_TERM_WINDOW:
+//            // The window is being hidden or closed, clean it up.
+//            terminate();
+//            break;
+//        default:
+//            LOGI("event not handled: %d", cmd);
+//    }
+//}
 
 bool checkValidationLayerSupport(const std::vector<const char*> validationLayers) {
     uint32_t layerCount;
