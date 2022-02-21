@@ -1,4 +1,4 @@
-#include "TemplateRender.h"
+#include "VulkanInstance.h"
 #include <android/asset_manager.h>
 #include <android/native_window.h>
 #include <jni.h>
@@ -33,6 +33,17 @@ public:
         //LOGE(&fmt);
     }
 
+    FileData readFile(const char* filePath){
+        AAsset* file = AAssetManager_open(mAssetManager, filePath, AASSET_MODE_BUFFER);
+        size_t fileLength = AAsset_getLength(file);
+
+        char* fileContent = new char[fileLength];
+        AAsset_read(file, fileContent, fileLength);
+
+        struct FileData fileData = { fileContent,fileLength };
+        return fileData;
+    }
+
 
     void createSurface() {
         //crate surface for current platform
@@ -48,16 +59,57 @@ public:
         };
     }
 
-    virtual FileData readFile(const char* filePath){
-        AAsset* file = AAssetManager_open(mAssetManager, filePath, AASSET_MODE_BUFFER);
-        size_t fileLength = AAsset_getLength(file);
+    void createInstance() {
 
-        char* fileContent = new char[fileLength];
-        AAsset_read(file, fileContent, fileLength);
+        if (isEnabledValidationLayers() && !checkValidationLayerSupport(validationLayers)) {
+            log("Validation layers requested, but not available!");
+        }
 
-        struct FileData fileData = { fileContent,fileLength };
-        return fileData;
+
+        // createInstance()
+        VkApplicationInfo appInfo = {
+                .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
+                .pNext = nullptr,
+                .apiVersion = VK_MAKE_VERSION(1, 0, 0),
+                .applicationVersion = VK_MAKE_VERSION(1, 0, 0),
+                .engineVersion = VK_MAKE_VERSION(1, 0, 0),
+                .pApplicationName = "Vulkan Template",
+                .pEngineName = "VulkanEngine",
+        };
+
+
+
+        std::vector<const char *> instanceExt;
+        instanceExt.push_back("VK_KHR_surface");
+        instanceExt.push_back("VK_KHR_android_surface");
+        const bool enableValidationLayers = isEnabledValidationLayers();
+        if (enableValidationLayers) {
+            instanceExt.push_back("VK_EXT_debug_report");
+        }
+
+        // Create the Vulkan instance
+        VkInstanceCreateInfo instanceCreateInfo{
+                .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
+                .pNext = nullptr,
+                .pApplicationInfo = &appInfo,
+                .enabledExtensionCount = static_cast<uint32_t>(instanceExt.size()),
+                .ppEnabledExtensionNames = instanceExt.data()
+        };
+        if (enableValidationLayers) {
+            instanceCreateInfo.enabledLayerCount = validationLayers.size();
+            instanceCreateInfo.ppEnabledLayerNames = validationLayers.data();
+        } else {
+            instanceCreateInfo.enabledLayerCount = 0;
+        }
+
+
+        if (VK_SUCCESS != (vkCreateInstance(&instanceCreateInfo, nullptr, instance.replace()))) {
+            log("Vulkan error. File[%s], line[%d]", __FILE__, __LINE__);
+            assert(false);
+        }
+
     }
+
 
 private:
     AAssetManager *mAssetManager;

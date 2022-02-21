@@ -18,10 +18,13 @@ class VulkanInstance {
 
 public:
 
-    //crate surface for current platform
+    //Create VK instance for platform
+    virtual void createInstance() {}
+
+    //Crate surface for current platform
     virtual void createSurface() {}
 
-    // log formatted message
+    //Log formatted message
     virtual void log(const char* text, ...){}
 
     //Read file from platform
@@ -184,56 +187,6 @@ protected:
     }
 
 
-    void createInstance() {
-
-        if (isEnabledValidationLayers() && !checkValidationLayerSupport(validationLayers)) {
-            log("Validation layers requested, but not available!");
-        }
-
-
-        // createInstance()
-        VkApplicationInfo appInfo = {
-                .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
-                .pNext = nullptr,
-                .apiVersion = VK_MAKE_VERSION(1, 0, 0),
-                .applicationVersion = VK_MAKE_VERSION(1, 0, 0),
-                .engineVersion = VK_MAKE_VERSION(1, 0, 0),
-                .pApplicationName = "Vulkan Template",
-                .pEngineName = "VulkanEngine",
-        };
-
-
-
-        std::vector<const char *> instanceExt;
-        instanceExt.push_back("VK_KHR_surface");
-        instanceExt.push_back("VK_KHR_android_surface");
-        const bool enableValidationLayers = isEnabledValidationLayers();
-        if (enableValidationLayers) {
-            instanceExt.push_back("VK_EXT_debug_report");
-        }
-
-        // Create the Vulkan instance
-        VkInstanceCreateInfo instanceCreateInfo{
-                .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
-                .pNext = nullptr,
-                .pApplicationInfo = &appInfo,
-                .enabledExtensionCount = static_cast<uint32_t>(instanceExt.size()),
-                .ppEnabledExtensionNames = instanceExt.data()
-        };
-        if (enableValidationLayers) {
-            instanceCreateInfo.enabledLayerCount = validationLayers.size();
-            instanceCreateInfo.ppEnabledLayerNames = validationLayers.data();
-        } else {
-            instanceCreateInfo.enabledLayerCount = 0;
-        }
-
-
-        if (VK_SUCCESS != (vkCreateInstance(&instanceCreateInfo, nullptr, instance.replace()))) {
-            log("Vulkan error. File[%s], line[%d]", __FILE__, __LINE__);
-            assert(false);
-        }
-
-    }
 
     void setupDebugCallback() {
         if (!isEnabledValidationLayers()) return;
