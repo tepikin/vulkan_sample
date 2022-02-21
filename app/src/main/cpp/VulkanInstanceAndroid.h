@@ -48,17 +48,15 @@ public:
         };
     }
 
-
-    virtual VkResult createShaderModule(VkDevice  device, const char* filePath, VkShaderModule* shaderOut) {
-        // Read the file
+    virtual FileData readFile(const char* filePath){
         AAsset* file = AAssetManager_open(mAssetManager, filePath, AASSET_MODE_BUFFER);
         size_t fileLength = AAsset_getLength(file);
 
         char* fileContent = new char[fileLength];
-
         AAsset_read(file, fileContent, fileLength);
 
-        return createShaderModuleInner(device, shaderOut, fileLength, fileContent);
+        struct FileData fileData = { fileContent,fileLength };
+        return fileData;
     }
 
 private:
@@ -66,3 +64,5 @@ private:
     ANativeWindow *mWindow;
 
 };
+
+

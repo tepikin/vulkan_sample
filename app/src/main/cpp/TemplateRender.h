@@ -7,7 +7,10 @@
 #include "vulkan/pipeline.h"
 #include <vulkan/vulkan.h>
 
-
+struct FileData{
+    char* fileContent;
+    size_t fileLength;
+};
 
 
 
@@ -21,7 +24,8 @@ public:
     // log formatted message
     virtual void log(const char* text, ...){}
 
-    virtual VkResult createShaderModule(VkDevice  device, const char* filePath, VkShaderModule* shaderOut) { assert(false);}
+    //Read file from platform
+    virtual FileData readFile(const char* filePath){assert(false);}
 
     VulkanInstance() {}
     ~VulkanInstance() {}
@@ -454,9 +458,10 @@ protected:
 
     }
 
-
-    VkResult createShaderModuleInner(VkDevice  device, VkShaderModule* shaderOut, size_t fileLength,
-                       const char *fileContent) const {
+    VkResult createShaderModule(VkDevice  device, const char* filePath, VkShaderModule* shaderOut) {
+        FileData fileData = readFile(filePath);
+        size_t fileLength=fileData.fileLength;
+        char *fileContent= fileData.fileContent;
         VkShaderModuleCreateInfo createInfo = {};
         createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
         createInfo.codeSize = fileLength;
